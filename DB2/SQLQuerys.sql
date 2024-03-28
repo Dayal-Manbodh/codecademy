@@ -29,6 +29,9 @@ AND
 WHERE 
     courseID = '1';
 
+
+-- dit is de query voor overzicht 5 om te bereken welke 3 webcasten het meest bekeken zijn. 
+
 SELECT TOP 3
     webcastID,
     title,
