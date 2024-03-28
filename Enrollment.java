@@ -1,3 +1,5 @@
+package domain.java;
+
 import java.util.Date;
 
 public class Enrollment {
