@@ -1,3 +1,5 @@
+package domain.java;
+
 public class Course {
     private String courseName;
     private String subject;

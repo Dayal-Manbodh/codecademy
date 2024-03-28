@@ -1,3 +1,5 @@
+package domain.database;
+
 import java.sql.*;
 
 import javafx.collections.ObservableList;

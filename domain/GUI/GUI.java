@@ -1,3 +1,5 @@
+package domain.GUI;
+
 import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -8,6 +10,18 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+
+import domain.database.Database;
+import domain.database.DataRetriever;
+
+import domain.java.Course;
+import domain.java.Student;
+import domain.java.Enrollment;
+import domain.java.Progress;
+import domain.java.Module;
+import domain.java.Webcast;
+
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
