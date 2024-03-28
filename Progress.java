@@ -1,5 +1,3 @@
-package domain.java;
-
 public class Progress {
     private int progressID;
     private int enrollmentID;

@@ -1,5 +1,4 @@
-package domain.java;
-
+import java.sql.Time;
 import java.util.Date;
 
 public class Webcast {
@@ -8,12 +7,23 @@ public class Webcast {
     private String description;
     private String speakerName;
     private String speakerOrganization;
-    private Date duration;
+    private Time duration;
     private Date publicationDate;
     private String url;
 
     // Constructor
-    public Webcast(int webcastID, String title, String description, String speakerName, String speakerOrganization, Date duration, Date publicationDate, String url) {
+
+    public Webcast(String title, String description, String speakerName, String speakerOrganization, Time duration, Date publicationDate, String url) {
+        this.title = title;
+        this.description = description;
+        this.speakerName = speakerName;
+        this.speakerOrganization = speakerOrganization;
+        this.duration = duration;
+        this.publicationDate = publicationDate;
+        this.url = url;
+    }
+
+    public Webcast(int webcastID, String title, String description, String speakerName, String speakerOrganization, Time duration, Date publicationDate, String url) {
         this.webcastID = webcastID;
         this.title = title;
         this.description = description;
@@ -65,11 +75,11 @@ public class Webcast {
         this.speakerOrganization = speakerOrganization;
     }
 
-    public Date getDuration() {
+    public Time getDuration() {
         return duration;
     }
 
-    public void setDuration(Date duration) {
+    public void setDuration(Time duration) {
         this.duration = duration;
     }
 
@@ -88,5 +98,4 @@ public class Webcast {
     public void setUrl(String url) {
         this.url = url;
     }
-    
 }

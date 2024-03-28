@@ -1,5 +1,3 @@
-package domain.java;
-
 import java.util.Date;
 
 public class Enrollment {
@@ -9,6 +7,12 @@ public class Enrollment {
     private Date enrollmentDate;
 
     // Constructor
+    public Enrollment(String studentEmailAddress, int courseID, Date enrollmentDate) {
+        this.studentEmailAddress = studentEmailAddress;
+        this.courseID = courseID;
+        this.enrollmentDate = enrollmentDate;
+    }
+
     public Enrollment(int enrollmentID, String studentEmailAddress, int courseID, Date enrollmentDate) {
         this.enrollmentID = enrollmentID;
         this.studentEmailAddress = studentEmailAddress;

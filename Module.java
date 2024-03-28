@@ -1,5 +1,3 @@
-package domain.java;
-
 import java.util.Date;
 
 public class Module {
@@ -12,6 +10,15 @@ public class Module {
     private int courseID;
 
     // Constructor
+
+    public Module(String title, String version, String description, String contactPersonName, String contactPersonEmail) {
+        this.title = title;
+        this.version = version;
+        this.description = description;
+        this.contactPersonName = contactPersonName;
+        this.contactPersonEmail = contactPersonEmail;
+    }
+
     public Module(int moduleID, String title, String version, String description, String contactPersonName, String contactPersonEmail, int courseID) {
         this.moduleID = moduleID;
         this.title = title;

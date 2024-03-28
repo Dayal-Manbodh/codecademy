@@ -1,6 +1,3 @@
-
-
-import domain.GUI.GUI;
 import javafx.application.Application;
 
 public class Main {
