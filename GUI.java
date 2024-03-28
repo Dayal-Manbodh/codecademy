@@ -82,7 +82,7 @@ public class GUI extends Application {
         Scene scene = new Scene(gridPane, 700, 400); // Breedte en hoogte van de Scene
         primaryStage.setScene(scene);
 
-        primaryStage.setTitle("Codecademy overzicht Dayal Manbodh Studentnummer: 2219243");
+        primaryStage.setTitle("Codecademy overzicht Dayal Manbodh Studentnummer: 2219243 | Mikail Sari Studentnummer: 2215079");
         primaryStage.show();
 
         button1.setOnAction((event) -> {
