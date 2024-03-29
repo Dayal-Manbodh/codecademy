@@ -34,6 +34,11 @@ public class Webcast {
         this.url = url;
     }
 
+    public Webcast(int webcastID, String Title) {
+        this.webcastID = webcastID;
+        this.title = title;
+    }
+
     // Getters and Setters
     public int getWebcastID() {
         return webcastID;

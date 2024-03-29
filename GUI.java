@@ -86,7 +86,7 @@ public class GUI extends Application {
         Scene scene = new Scene(gridPane, 700, 400); // Breedte en hoogte van de Scene
         primaryStage.setScene(scene);
 
-        primaryStage.setTitle("Codecademy overzicht Dayal Manbodh Studentnummer: 2219243");
+        primaryStage.setTitle("Codecademy overzicht Dayal Manbodh Studentnummer: 2219243, Mikail Sari Studentnummer: 2215079");
         primaryStage.show();
 
         button1.setOnAction((event) -> {
@@ -1262,6 +1262,75 @@ public class GUI extends Application {
         averageProgressStage.setScene(scene);
         averageProgressStage.setTitle("Gemmidelde percentage per cursus");
         averageProgressStage.show();
+    }
+
+   
+
+    public void openTop3WebcastStage(Stage previousStage, Webcast webcast) {
+        Stage top3WebcastStage = new Stage();
+
+        Button top3WebcastStagecloseButton = new Button("Close");
+
+        top3WebcastStagecloseButton.setOnAction((event) -> {
+            if (previousStage != null) {
+                previousStage.show();
+                top3WebcastStage.close();
+            } else {
+                System.out.println("Geen vorige stage gevonden.");
+            }
+        });
+
+        TableView<Webcast> aTableView = new TableView<>();
+        ObservableList<Webcast> webcastData = FXCollections.observableArrayList();
+
+        TableColumn<Module, Integer> webcastIDCol = new TableColumn<>("Webcast ID");
+        webcastIDCol.setCellValueFactory(new PropertyValueFactory<>("webcastID"));
+
+        TableColumn<Module, String> webcastTitleCol = new TableColumn<>("Webcast Title");
+        webcastTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+        aTableView.getColumns().addAll(webcastIDCol, webcastTitleCol);
+
+        try {
+
+            Connection connection = database.getConnection();
+
+            String query = "SELECT TOP 3" + 
+                                "    webcastID," + 
+                                "    title," + 
+                                "    SUM(percentageWatched * DATEDIFF(minute, '00:00:00', duration)) AS totalWatchTime_minutes" + 
+                                "FROM" + 
+                                "    webcast" + 
+                                "JOIN" + 
+                                "    progress ON webcastID = contentItemID" + 
+                                "GROUP BY" + 
+                                "    webcastID," + 
+                                "    title" + 
+                                "ORDER BY" + 
+                                "    totalWatchTime_minutes DESC;";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, webcast.getWebcastID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int webcastID = resultSet.getInt("webcastID");
+                String webcastTitle = resultSet.getString("webcastTitle");
+                webcastData.add(new Webcast(webcastID, webcastTitle));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error inserting data: " + e.getMessage());
+        }
+
+        aTableView.setItems(webcastData);
+
+        VBox hBoxavarageProgress = new VBox();
+        hBoxavarageProgress.getChildren().addAll(top3WebcastStagecloseButton, aTableView);
+
+        Scene scene = new Scene(hBoxavarageProgress, 700, 400);
+        top3WebcastStage.setScene(scene);
+        top3WebcastStage.setTitle("De top 3 Webcasts");
+        top3WebcastStage.show();
     }
 
     private void refreshTable() {
