@@ -8,10 +8,17 @@ public class Webcast {
     private String speakerName;
     private String speakerOrganization;
     private Time duration;
+    private Double totalWatchTime_minutes;
     private Date publicationDate;
     private String url;
 
     // Constructor
+
+    public Webcast(int webcastID, String title, Double totalWatchTime_minutes) {
+        this.webcastID = webcastID;
+        this.title = title;
+        this.totalWatchTime_minutes = totalWatchTime_minutes;
+    }
 
     public Webcast(String title, String description, String speakerName, String speakerOrganization, Time duration, Date publicationDate, String url) {
         this.title = title;
@@ -34,11 +41,6 @@ public class Webcast {
         this.url = url;
     }
 
-    public Webcast(int webcastID, String Title) {
-        this.webcastID = webcastID;
-        this.title = title;
-    }
-
     // Getters and Setters
     public int getWebcastID() {
         return webcastID;
@@ -50,6 +52,10 @@ public class Webcast {
 
     public String getTitle() {
         return title;
+    }
+
+    public Double getTotalWatchTime_minutes(){
+        return totalWatchTime_minutes;
     }
 
     public void setTitle(String title) {

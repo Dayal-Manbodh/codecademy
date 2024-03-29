@@ -1385,34 +1385,38 @@ public class GUI extends Application {
         TableColumn<Webcast, String> webcastTitleCol = new TableColumn<>("Webcast Title");
         webcastTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        aTableView.getColumns().addAll(webcastIDCol, webcastTitleCol);
+        TableColumn<Webcast, Double> webcastMinCol = new TableColumn<>("Totaal bekeken minuten");
+        webcastMinCol.setCellValueFactory(new PropertyValueFactory<>("totalWatchTime_minutes"));
+
+        aTableView.getColumns().addAll(webcastIDCol, webcastTitleCol,webcastMinCol);
 
         try {
 
             Connection connection = database.getConnection();
 
-            String query = "SELECT TOP 3" + 
-                                "    webcastID," + 
-                                "    title," + 
-                                "    SUM(percentageWatched * DATEDIFF(minute, '00:00:00', duration)) AS totalWatchTime_minutes" + 
-                                "FROM" + 
-                                "    webcast" + 
-                                "JOIN" + 
-                                "    progress ON webcastID = contentItemID" + 
-                                "GROUP BY" + 
-                                "    webcastID," + 
-                                "    title" + 
-                                "ORDER BY" + 
-                                "    totalWatchTime_minutes DESC;";
+            String sql = "SELECT TOP 3 " +
+             "    webcastID," +
+             "    title," +
+             "    SUM(percentageWatched * DATEDIFF(MINUTE, '00:00:00', duration)) AS totalWatchTime_minutes " +
+             "FROM " +
+             "    webcast " +
+             "JOIN " +
+             "    progress ON webcastID = contentItemID " +
+             "GROUP BY " +
+             "    webcastID, " +
+             "    title " +
+             "ORDER BY " +
+             "    totalWatchTime_minutes DESC;";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, webcast.getWebcastID());
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            // preparedStatement.setInt(1, webcast.getWebcastID());
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 int webcastID = resultSet.getInt("webcastID");
-                String webcastTitle = resultSet.getString("webcastTitle");
-                webcastData.add(new Webcast(webcastID, webcastTitle));
+                String webcastTitle = resultSet.getString("title");
+                Double webcastTotalTime = resultSet.getDouble("totalWatchTime_minutes");
+                webcastData.add(new Webcast(webcastID, webcastTitle, webcastTotalTime));
             }
         } catch (SQLException e) {
             System.err.println("Error inserting data: " + e.getMessage());
