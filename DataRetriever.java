@@ -42,12 +42,13 @@ public class DataRetriever<T> {
                     case "Course":
                         // Verwerk een rij voor de Course-klasse
 
+                        int courseID = resultSet.getInt("courseID");
                         String courseName = resultSet.getString("courseName");
                         String subject = resultSet.getString("subject");
                         String level = resultSet.getString("level");
                         String introductionText = resultSet.getString("introductionText");
 
-                        data.add(new Course(courseName, subject, level, introductionText));
+                        data.add(new Course(courseName, subject, level, introductionText, courseID));
 
                         break;
                     case "Module":
@@ -59,10 +60,10 @@ public class DataRetriever<T> {
                         String description = resultSet.getString("description");
                         String contactPersonName = resultSet.getString("contactPersonName");
                         String contactPersonEmail = resultSet.getString("contactPersonEmail");
-                        int courseID = resultSet.getInt("courseID");
+                        int moduleCourseID = resultSet.getInt("courseID");
 
                         data.add(new Module(moduleID, title, version, description, contactPersonName,
-                                contactPersonEmail, courseID));
+                                contactPersonEmail, moduleCourseID));
 
                         break;
                     case "Webcast":

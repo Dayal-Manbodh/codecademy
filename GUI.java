@@ -24,6 +24,7 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -36,6 +37,7 @@ import javafx.scene.control.Alert;
 public class GUI extends Application {
 
     private boolean Result;
+    private Database database = new Database();
     private DataRetriever dataRetrieverStudent;
     private DataRetriever dataRetrieverCourse;
     private DataRetriever dataRetrieverEnrollment;
@@ -398,6 +400,20 @@ public class GUI extends Application {
         }
 
         tableView.setItems(courses);
+
+        tableView.setOnMouseClicked(event -> {
+
+            if (event.getClickCount() == 1) { // Detect single click
+                Course cursus = tableView.getSelectionModel().getSelectedItem();
+                // if (cursus != null) {
+                //     System.out.println("Selected cursus: " + cursus.getCourseID());
+                // }
+                
+                openAverageProgressStage(cursusStage,cursus);
+                cursusStage.close();
+
+            }
+        });
 
         VBox vbox = new VBox();
         vbox.getChildren().addAll(hBox, tableView);
@@ -1176,6 +1192,76 @@ public class GUI extends Application {
         addProgressStage.setScene(scene);
         addProgressStage.setTitle("Add Progress");
         addProgressStage.show();
+    }
+
+    public void openAverageProgressStage(Stage previousStage, Course cursus) {
+        Stage averageProgressStage = new Stage();
+
+        Button averageProgressStagecloseButton = new Button("Close");
+
+        averageProgressStagecloseButton.setOnAction((event) -> {
+            if (previousStage != null) {
+                previousStage.show();
+                averageProgressStage.close();
+            } else {
+                System.out.println("Geen vorige stage gevonden.");
+            }
+        });
+
+        TableView<Module> aTableView = new TableView<>();
+        ObservableList<Module> moduleData = FXCollections.observableArrayList();
+
+        TableColumn<Module, Integer> moduleIDCol = new TableColumn<>("Module ID");
+        moduleIDCol.setCellValueFactory(new PropertyValueFactory<>("moduleID"));
+
+        TableColumn<Module, String> moduleTitleCol = new TableColumn<>("Module Title");
+        moduleTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+        TableColumn<Module, Double> averageProgressPercentageCol = new TableColumn<>("Average Progress Percentage");
+        averageProgressPercentageCol.setCellValueFactory(new PropertyValueFactory<>("averageProgressPercentage"));
+
+        aTableView.getColumns().addAll(moduleIDCol, moduleTitleCol, averageProgressPercentageCol);
+
+        try {
+
+            Connection connection = database.getConnection();
+
+            String query = "SELECT " +
+                    "moduleID, " +
+                    "title AS ModuleTitle, " +
+                    "AVG(percentageWatched) AS AverageProgressPercentage " +
+                    "FROM " +
+                    "module " +
+                    "INNER JOIN " +
+                    "progress ON moduleID = contentItemID " +
+                    "WHERE " +
+                    "courseID = ? " +
+                    "GROUP BY " +
+                    "moduleID,title;";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, cursus.getCourseID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int moduleID = resultSet.getInt("moduleID");
+                String moduleTitle = resultSet.getString("ModuleTitle");
+                double averageProgressPercentage = resultSet.getDouble("AverageProgressPercentage");
+                moduleData.add(new Module(moduleID, moduleTitle, averageProgressPercentage));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error inserting data: " + e.getMessage());
+        }
+
+        aTableView.setItems(moduleData);
+
+        VBox hBoxavarageProgress = new VBox();
+        hBoxavarageProgress.getChildren().addAll(averageProgressStagecloseButton, aTableView);
+
+        Scene scene = new Scene(hBoxavarageProgress, 700, 400);
+        averageProgressStage.setScene(scene);
+        averageProgressStage.setTitle("Gemmidelde percentage per cursus");
+        averageProgressStage.show();
     }
 
     private void refreshTable() {

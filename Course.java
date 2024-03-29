@@ -3,6 +3,7 @@ public class Course {
     private String subject;
     private String introductionText;
     private String level;
+    private int courseID;
 
     public Course(String courseName, String subject, String introductionText, String level) {
         this.courseName = courseName;
@@ -11,9 +12,21 @@ public class Course {
         this.level = level;
     }
 
+    public Course(String courseName, String subject, String introductionText, String level, int courseID) {
+        this.courseName = courseName;
+        this.subject = subject;
+        this.introductionText = introductionText;
+        this.level = level;
+        this.courseID = courseID;
+    }
+
     // Getters
     public String getCourseName() {
         return courseName;
+    }
+
+    public int getCourseID(){
+        return courseID;
     }
 
     public String getSubject() {

@@ -7,9 +7,16 @@ public class Module {
     private String description;
     private String contactPersonName;
     private String contactPersonEmail;
+    private Double averageProgressPercentage;
     private int courseID;
 
     // Constructor
+
+    public Module(int moduleID, String title, Double averageProgressPercentage) {
+        this.moduleID = moduleID;
+        this.title = title;
+        this.averageProgressPercentage = averageProgressPercentage;
+    }
 
     public Module(String title, String version, String description, String contactPersonName, String contactPersonEmail) {
         this.title = title;
@@ -30,6 +37,10 @@ public class Module {
     }
 
     // Getters and Setters
+    public Double getAverageProgressPercentage(){
+        return averageProgressPercentage;
+    }
+
     public int getModuleID() {
         return moduleID;
     }
