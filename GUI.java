@@ -867,6 +867,7 @@ public class GUI extends Application {
         Button addButton = new Button("Add");
         Button refreshButton = new Button("Verversen");
         Button closeButton = new Button("Close");
+        Button openTop3WebcastButton = new Button("Top 3 Webcasts");
 
         TableView<Webcast> tableView = new TableView<>();
 
@@ -945,9 +946,11 @@ public class GUI extends Application {
             }
         });
 
+        openTop3WebcastButton.setOnAction((event) -> { openTop3WebcastStage(previousStage, null); webcastStage.close();});
+
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(10);
-        buttonBox.getChildren().addAll(addButton, refreshButton, closeButton);
+        buttonBox.getChildren().addAll(addButton, refreshButton, closeButton, openTop3WebcastButton);
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(buttonBox, tableView);
@@ -965,6 +968,8 @@ public class GUI extends Application {
         Button addButton = new Button("Add");
         Button refreshButton = new Button("Verversen");
         Button closeButton = new Button("Close");
+        
+        
 
         TableView<Progress> tableView = new TableView<>();
 
@@ -1017,6 +1022,8 @@ public class GUI extends Application {
                 System.out.println("Geen vorige stage gevonden.");
             }
         });
+
+        
 
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(10);
