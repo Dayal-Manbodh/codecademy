@@ -1349,7 +1349,7 @@ public class GUI extends Application {
 
         Scene scene = new Scene(hBoxavarageProgress, 700, 400);
         averageModuelStage.setScene(scene);
-        averageModuelStage.setTitle("Gemmidelde percentage per cursus");
+        averageModuelStage.setTitle("Percentage per module");
         averageModuelStage.show();
     }
 
