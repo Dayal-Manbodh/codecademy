@@ -898,6 +898,19 @@ public class GUI extends Application {
         }
 
         tableView.setItems(webcasts);
+        tableView.setOnMouseClicked(event -> {
+
+            if (event.getClickCount() == 1) { // Detect single click
+                Webcast webcast = tableView.getSelectionModel().getSelectedItem();
+                // if (cursus != null) {
+                //     System.out.println("Selected cursus: " + cursus.getCourseID());
+                // }
+
+                openTop3WebcastStage(webcastStage, webcast);
+                webcastStage.close();
+
+            }
+        });
 
         addButton.setOnAction((event) -> {
             openAddWebcastStage(webcastStage);
@@ -1283,10 +1296,10 @@ public class GUI extends Application {
         TableView<Webcast> aTableView = new TableView<>();
         ObservableList<Webcast> webcastData = FXCollections.observableArrayList();
 
-        TableColumn<Module, Integer> webcastIDCol = new TableColumn<>("Webcast ID");
+        TableColumn<Webcast, Integer> webcastIDCol = new TableColumn<>("Webcast ID");
         webcastIDCol.setCellValueFactory(new PropertyValueFactory<>("webcastID"));
 
-        TableColumn<Module, String> webcastTitleCol = new TableColumn<>("Webcast Title");
+        TableColumn<Webcast, String> webcastTitleCol = new TableColumn<>("Webcast Title");
         webcastTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
 
         aTableView.getColumns().addAll(webcastIDCol, webcastTitleCol);
