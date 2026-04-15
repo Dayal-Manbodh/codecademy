@@ -1,0 +1,221 @@
+USE [master]
+GO
+/****** Object:  Database [codecademy]    Script Date: 3/29/2024 8:28:29 PM ******/
+CREATE DATABASE [codecademy]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'codecademy', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\codecademy.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'codecademy_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\codecademy_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [codecademy] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [codecademy].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [codecademy] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [codecademy] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [codecademy] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [codecademy] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [codecademy] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [codecademy] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [codecademy] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [codecademy] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [codecademy] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [codecademy] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [codecademy] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [codecademy] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [codecademy] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [codecademy] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [codecademy] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [codecademy] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [codecademy] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [codecademy] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [codecademy] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [codecademy] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [codecademy] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [codecademy] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [codecademy] SET RECOVERY FULL 
+GO
+ALTER DATABASE [codecademy] SET  MULTI_USER 
+GO
+ALTER DATABASE [codecademy] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [codecademy] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [codecademy] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [codecademy] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [codecademy] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [codecademy] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'codecademy', N'ON'
+GO
+ALTER DATABASE [codecademy] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [codecademy] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [codecademy]
+GO
+/****** Object:  User [bibliotheek]    Script Date: 3/29/2024 8:28:30 PM ******/
+CREATE USER [bibliotheek] FOR LOGIN [bibliotheek] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  Table [dbo].[course]    Script Date: 3/29/2024 8:28:30 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[course](
+	[courseID] [int] IDENTITY(1,1) NOT NULL,
+	[courseName] [varchar](255) NULL,
+	[subject] [varchar](255) NULL,
+	[introductionText] [varchar](255) NULL,
+	[level] [varchar](20) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[courseID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[enrollment]    Script Date: 3/29/2024 8:28:30 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[enrollment](
+	[enrollmentID] [int] IDENTITY(1,1) NOT NULL,
+	[studentEmailAddress] [varchar](255) NULL,
+	[courseID] [int] NULL,
+	[enrollmentDate] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[enrollmentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[module]    Script Date: 3/29/2024 8:28:30 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[module](
+	[moduleID] [int] IDENTITY(1,1) NOT NULL,
+	[title] [varchar](255) NULL,
+	[version] [varchar](50) NULL,
+	[description] [varchar](255) NULL,
+	[contactPersonName] [varchar](255) NULL,
+	[contactPersonEmail] [varchar](255) NULL,
+	[courseID] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[moduleID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UQ_Module] UNIQUE NONCLUSTERED 
+(
+	[title] ASC,
+	[version] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[progress]    Script Date: 3/29/2024 8:28:30 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[progress](
+	[progressID] [int] IDENTITY(1,1) NOT NULL,
+	[enrollmentID] [int] NULL,
+	[contentItemID] [int] NULL,
+	[percentageWatched] [decimal](5, 2) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[progressID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[student]    Script Date: 3/29/2024 8:28:30 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[student](
+	[emailAddress] [varchar](255) NOT NULL,
+	[name] [varchar](255) NULL,
+	[birthdate] [date] NULL,
+	[gender] [varchar](10) NULL,
+	[address] [varchar](255) NULL,
+	[city] [varchar](100) NULL,
+	[country] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[emailAddress] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[webcast]    Script Date: 3/29/2024 8:28:30 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[webcast](
+	[webcastID] [int] IDENTITY(1,1) NOT NULL,
+	[title] [varchar](255) NULL,
+	[description] [text] NULL,
+	[speakerName] [varchar](255) NULL,
+	[speakerOrganization] [varchar](255) NULL,
+	[duration] [time](7) NULL,
+	[publicationDate] [date] NULL,
+	[url] [varchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[webcastID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[enrollment]  WITH CHECK ADD FOREIGN KEY([courseID])
+REFERENCES [dbo].[course] ([courseID])
+GO
+ALTER TABLE [dbo].[enrollment]  WITH CHECK ADD FOREIGN KEY([studentEmailAddress])
+REFERENCES [dbo].[student] ([emailAddress])
+GO
+ALTER TABLE [dbo].[module]  WITH CHECK ADD FOREIGN KEY([courseID])
+REFERENCES [dbo].[course] ([courseID])
+GO
+ALTER TABLE [dbo].[progress]  WITH CHECK ADD FOREIGN KEY([contentItemID])
+REFERENCES [dbo].[module] ([moduleID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[progress]  WITH CHECK ADD FOREIGN KEY([enrollmentID])
+REFERENCES [dbo].[enrollment] ([enrollmentID])
+GO
+USE [master]
+GO
+ALTER DATABASE [codecademy] SET  READ_WRITE 
+GO

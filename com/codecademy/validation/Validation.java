@@ -1,4 +1,4 @@
-package Validation;
+package com.codecademy.validation;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -9,9 +9,9 @@ public class Validation {
 
 
     public boolean EmailValidation(String email){
-        Pattern pattern = Pattern.compile("(.*)(@)(.*)(.[a-z])", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
-        return matcher.find();
+        return matcher.matches();
     }
 
     public boolean DateValidation(LocalDate date){

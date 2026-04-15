@@ -1,6 +1,6 @@
-package test;
+package com.codecademy.test;
 
-import Validation.Validation;
+import com.codecademy.validation.Validation;
 import org.junit.Assert;
 import org.junit.Test;
 
